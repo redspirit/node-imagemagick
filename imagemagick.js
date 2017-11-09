@@ -325,22 +325,22 @@ exports.crop = function (options, callback) {
             if ((arg != "-resize") && ignoreArg) {
                 var dSrc = meta.width / meta.height,
                     dDst = t.opt.width / t.opt.height,
-                    resizeTo = (dSrc < dDst) ? '' + t.opt.width + 'x' : 'x' + t.opt.height,
+                    resizeTo = options.size + 'x' + options.size,
                     dGravity = options.gravity ? options.gravity : "Center";
                 args = args.concat([
+                    '-crop', '' + t.opt.width + 'x' + t.opt.height + '+' + options.offset[0] + '+' + options.offset[1],
                     '-resize', resizeTo,
-                    '-gravity', dGravity,
-                    '-crop', '' + t.opt.width + 'x' + t.opt.height + '+0+0',
+                    //'-gravity', dGravity,
                     '+repage'
                 ]);
                 ignoreArg = false;
             }
-        })
+        });
 
         t.args = args;
         resizeCall(t, callback);
     })
-}
+};
 
 exports.resizeArgs = function (options) {
     var opt = {
