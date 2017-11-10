@@ -1,7 +1,6 @@
 var childproc = require('child_process'),
     EventEmitter = require('events').EventEmitter;
 
-
 function exec2(file, args /*, options, callback */) {
     var options = {
         encoding: 'utf8'
@@ -108,6 +107,29 @@ function exec2(file, args /*, options, callback */) {
     return child;
 };
 
+function exec3(file, args, callback) {
+
+    var child = childproc.spawn(file, args);
+
+    var buffers = [];
+
+    child.stderr.on('data', function (data) {
+        buffers.push(data);
+    });
+    child.stdout.on('data', function (data) {
+        buffers.push(data);
+    });
+    child.stdout.on('end', function () {
+        var buffer = Buffer.concat(buffers);
+        callback(null, buffer);
+    });
+    child.on('error', function (err) {
+        callback(err.toString());
+    });
+
+    return child;
+
+};
 
 function parseIdentify(input) {
     var lines = input.split("\n"),
@@ -261,7 +283,8 @@ exports.convert = function (args, timeout, callback) {
     }
     if (timeout && (timeout = parseInt(timeout)) > 0 && !isNaN(timeout))
         procopt.timeout = timeout;
-    return exec2(exports.convert.path, args, procopt, callback);
+    //return exec2(exports.convert.path, args, procopt, callback);
+    return exec3(exports.convert.path, args, callback);
 }
 exports.convert.path = 'convert';
 
@@ -330,7 +353,6 @@ exports.crop = function (options, callback) {
                 args = args.concat([
                     '-crop', '' + t.opt.width + 'x' + t.opt.height + '+' + options.offset[0] + '+' + options.offset[1],
                     '-resize', resizeTo,
-                    //'-gravity', dGravity,
                     '+repage'
                 ]);
                 ignoreArg = false;

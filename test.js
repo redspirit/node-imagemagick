@@ -4,25 +4,25 @@ var im = require('./imagemagick');
 var path = __dirname + '/sample-images/blue-bottle-coffee.jpg';
 var imData = fs.readFileSync(path, 'binary');
 
-im.identify({data: imData}, function (err, features) {
-    if (err)
-        return console.error(err.stack || err);
-    console.log('identify({data:imdata}) ->', features);
-});
+// im.identify({data: imData}, function (err, features) {
+//     if (err)
+//         return console.error(err.stack || err);
+//     console.log('identify({data:imdata}) ->', features);
+// });
 
 
-
-//im.resize({
-//    srcData: imData,
-//    //dstPath: 'test-resized.jpg',
-//    width: 100
-//}, function (err, stdout, stderr) {
-//    if (err)
-//        return console.error(err.stack || err);
+// im.resize({
+//     srcData: imData,
+//     //dstPath: 'test-resized.jpg',
+//     width: 100
+// }, function (err, stdout) {
+//     if (err)
+//         return console.error(err);
 //
-//    console.log('stdout', new Buffer(stdout));
+//     console.log('stdout', stdout);
+//     fs.writeFileSync('/home/spirit/workspace/playground/node-imagemagick/rrr.jpg', stdout);
 //
-//});
+// });
 
 
 //timeStarted = new Date;
