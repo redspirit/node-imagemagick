@@ -1,7 +1,8 @@
 var fs = require('fs');
 var im = require('./imagemagick');
 
-var path = __dirname + '/sample-images/blue-bottle-coffee.jpg';
+var path = __dirname + '/sample-images/trans.png';
+var path2 = __dirname + '/sample-images/out.png';
 var imData = fs.readFileSync(path, 'binary');
 
 // im.identify({data: imData}, function (err, features) {
@@ -11,18 +12,19 @@ var imData = fs.readFileSync(path, 'binary');
 // });
 
 
-// im.resize({
-//     srcData: imData,
-//     //dstPath: 'test-resized.jpg',
-//     width: 100
-// }, function (err, stdout) {
-//     if (err)
-//         return console.error(err);
-//
-//     console.log('stdout', stdout);
-//     fs.writeFileSync('/home/spirit/workspace/playground/node-imagemagick/rrr.jpg', stdout);
-//
-// });
+im.removePngTransparent({
+    srcPath: path,
+    //srcData: imData,
+    //dstPath: path2
+}, function (err, stdout) {
+    if (err)
+        return console.error(err);
+
+    console.log('stdout', stdout.length);
+
+    fs.writeFileSync('/home/spirit/workspace/playground/node-imagemagick/rrr.png', stdout);
+
+});
 
 
 //timeStarted = new Date;

@@ -307,10 +307,31 @@ exports.resize = function (options, callback) {
     return resizeCall(t, callback)
 }
 
-exports.removePngTransparent = function (options, callback) {
+exports.removePngTransparent = function (opt, callback) {
 
+    opt.format = 'png';
 
-    
+    if (!opt.srcPath) {
+        opt.srcPath = (opt.format ? opt.format + ':-' : '-'); // stdin
+    }
+    if (!opt.dstPath)
+        opt.dstPath = (opt.format ? opt.format + ':-' : '-'); // stdout
+
+    var argsArray = [
+        opt.srcPath,
+        '-background', 'white',
+        '-alpha', 'remove',
+        opt.dstPath
+    ];
+
+    var t = {
+        opt: opt
+    };
+    t.opt.timeout = 0;
+    t.args = argsArray;
+
+    resizeCall(t, callback);
+
 }
 
 exports.crop = function (options, callback) {
@@ -415,8 +436,6 @@ exports.resizeArgs = function (options) {
     }
     if (!opt.dstPath)
         opt.dstPath = (opt.format ? opt.format + ':-' : '-'); // stdout
-    if (opt.width === 0 && opt.height === 0)
-        throw new Error('both width and height can not be 0 (zero)');
 
     // build args
     var args = [opt.srcPath];
