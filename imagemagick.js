@@ -307,6 +307,12 @@ exports.resize = function (options, callback) {
     return resizeCall(t, callback)
 }
 
+exports.removePngTransparent = function (options, callback) {
+
+
+    
+}
+
 exports.crop = function (options, callback) {
     if (typeof options !== 'object')
         throw new TypeError('First argument must be an object');
