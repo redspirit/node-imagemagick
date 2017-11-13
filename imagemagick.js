@@ -355,12 +355,24 @@ exports.crop = function (options, callback) {
                 var dSrc = meta.width / meta.height,
                     dDst = t.opt.width / t.opt.height,
                     resizeTo = options.size + 'x' + options.size,
-                    dGravity = options.gravity ? options.gravity : "Center";
-                args = args.concat([
+                    dGravity = options.gravity;
+
+                var argsArray = [
                     '-crop', '' + t.opt.width + 'x' + t.opt.height + '+' + options.offset[0] + '+' + options.offset[1],
                     '-resize', resizeTo,
                     '+repage'
-                ]);
+                ];
+
+                if(dGravity) {
+                    argsArray = [
+                        '-resize', options.size + 'x' + options.size + '^',
+                        '-gravity', dGravity,
+                        '-crop', '' + options.size + 'x' + options.size + '+0+0',
+                        '+repage'
+                    ];
+                }
+
+                args = args.concat(argsArray);
                 ignoreArg = false;
             }
         });
